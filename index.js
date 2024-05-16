@@ -6,6 +6,7 @@ const admin = require("firebase-admin");
 
 const app = express();
 const port = 8080;
+require("dotenv").config();
 
 const serviceAccount = require("./detectionapp-9fad2-firebase-adminsdk-n094q-b78e545fa0.json");
 
@@ -150,4 +151,8 @@ app.post("/report", upload.single("image"), (req, res) => {
 */
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
+  console.log(process.env.DB_HOST);
+  console.log(process.env.DB_USER);
+  console.log(process.env.DB_PASSWORD);
+  console.log(process.env.DB_DATABASE);
 });
