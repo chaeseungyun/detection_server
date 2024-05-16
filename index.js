@@ -122,6 +122,7 @@ app.post("/login", (req, res) => {
 // 포트홀 발견 시 데이터를 담아 서버로 전송
 app.post("/discover-pothole", (req, res) => {});
 
+/*
 // 알림 수신 시 서버에 데이터 전송
 app.post("/report", upload.single("image"), (req, res) => {
   const { user_id, latitude, longitude } = req.body;
@@ -146,7 +147,7 @@ app.post("/report", upload.single("image"), (req, res) => {
     }
   );
 });
-
+*/
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
