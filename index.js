@@ -176,6 +176,30 @@ app.get("/get-list", (req, res) => {
   });
 });
 
+// 신고 성공 후 호출해서 신고 완료 처리
+app.put("/report/:report_id", (req, res) => {
+  const reportId = req.params.report_id;
+
+  const query = `
+    UPDATE reports
+    SET reported = TRUE
+    WHERE report_id = ?;
+  `;
+
+  db.query(query, [reportId], (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: "접수 내용이 없습니다." });
+    }
+
+    res.status(200).json({ message: "접수가 성공적으로 신고되었습니다." });
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
