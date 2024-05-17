@@ -123,36 +123,30 @@ app.post("/login", (req, res) => {
 // 포트홀 발견 시 데이터를 담아 서버로 전송
 app.post("/discover-pothole", (req, res) => {});
 
-/*
-// 알림 수신 시 서버에 데이터 전송
-app.post("/report", upload.single("image"), (req, res) => {
+// 알림 수신 시 서버에 데이터 저장
+app.post("/report", (req, res) => {
   const { user_id, latitude, longitude } = req.body;
-  const image = req.file ? req.file.buffer : null;
 
   if (!user_id || !latitude || !longitude) {
     return res.status(400).send("id, 위도, 경도가 필요합니다");
   }
 
   const query =
-    "INSERT INTO reports (user_id, latitude, longitude, image) VALUES (?, ?, ?, ?)";
+    "INSERT INTO reports (user_id, latitude, longitude) VALUES (?, ?, ?)";
   db.query(
     query,
-    [user_id, parseFloat(latitude), parseFloat(longitude), image],
+    [user_id, parseFloat(latitude), parseFloat(longitude)],
     (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
         return res.status(500).send("Internal server error");
       }
 
-      res.status(200).send("성공적으로 신고했습니다.");
+      res.status(200).send("성공적으로 접수했습니다.");
     }
   );
 });
-*/
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
-  console.log(process.env.DB_HOST);
-  console.log(process.env.DB_USER);
-  console.log(process.env.DB_PASSWORD);
-  console.log(process.env.DB_DATABASE);
 });
