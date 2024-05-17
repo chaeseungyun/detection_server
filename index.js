@@ -99,7 +99,7 @@ app.post("/login", (req, res) => {
   const { account, password } = req.body;
 
   if (!account || !password) {
-    return res.status(400).send("Account and password are required");
+    return res.status(400).send({ message: "아이디와 비밀번호가 필요합니다." });
   }
 
   const query = "SELECT id FROM users WHERE account = ? AND password = ?";
@@ -128,7 +128,7 @@ app.post("/report", (req, res) => {
   const { user_id, latitude, longitude } = req.body;
 
   if (!user_id || !latitude || !longitude) {
-    return res.status(400).send("id, 위도, 경도가 필요합니다");
+    return res.status(400).send({ message: "id, 위도, 경도가 필요합니다" });
   }
 
   const query =
@@ -139,10 +139,10 @@ app.post("/report", (req, res) => {
     (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
-        return res.status(500).send("Internal server error");
+        return res.status(500).send({ message: "internal server error" });
       }
 
-      res.status(200).send("성공적으로 접수했습니다.");
+      res.status(200).send({ message: "성공적으로 접수했습니다." });
     }
   );
 });
