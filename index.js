@@ -151,6 +151,7 @@ app.post("/report", (req, res) => {
 app.get("/get-list", (req, res) => {
   const query = `
     SELECT 
+      r.report_id,
       r.latitude, 
       r.longitude, 
       u.account, 
