@@ -147,6 +147,34 @@ app.post("/report", (req, res) => {
   );
 });
 
+// 신고 안된 접수 목록 반환
+app.get("/get-list", (req, res) => {
+  const query = `
+    SELECT 
+      r.latitude, 
+      r.longitude, 
+      u.account, 
+      u.password
+    FROM 
+      reports r
+    JOIN 
+      users u 
+    ON 
+      r.user_id = u.id
+    WHERE 
+      r.reported = FALSE;
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+
+    res.status(200).json(results);
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
