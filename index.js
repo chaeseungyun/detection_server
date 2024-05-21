@@ -121,7 +121,37 @@ app.post("/login", (req, res) => {
 });
 
 // 포트홀 발견 시 데이터를 담아 서버로 전송
-app.post("/discover-pothole", (req, res) => {});
+app.post("/discover-pothole", (req, res) => {
+  db.query("select device_token from users", (err, result) => {
+    if (err) {
+      console.error("Error fetching device tokens:", err);
+      res.status(500).send("Error fetching device tokens");
+      return;
+    }
+
+    const tokens = result.map((row) => row.device_token);
+
+    const message = {
+      notification: {
+        title: "포트홀을 발견했습니다!",
+        body: "신고하시겠습니까?",
+      },
+      tokens: tokens,
+    };
+
+    admin
+      .messaging()
+      .sendMulticast(message)
+      .then((response) => {
+        console.log("Successfully sent message:", response);
+        res.send("Data received and notification sent");
+      })
+      .catch((error) => {
+        console.log("Error sending message:", error);
+        res.status(500).send("Error sending notification");
+      });
+  });
+});
 
 // 알림 수신 시 서버에 데이터 저장
 app.post("/report", (req, res) => {
