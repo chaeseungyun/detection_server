@@ -196,7 +196,7 @@ app.post("/discover-pothole/:discovery", (req, res) => {
 
     const message = {
       notification: {
-        title: "포트홀을 발견했습니다!",
+        title: title,
         body: "신고하시겠습니까?",
       },
       tokens: tokens,
