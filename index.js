@@ -62,7 +62,10 @@ app.post("/create-account", (req, res) => {
 });
 
 // 알림 테스트용 코드
-app.get("/discover-pothole", (req, res) => {
+app.get("/discover-pothole/:discovery", (req, res) => {
+  const discovery = req.params.discovery;
+  let type = "";
+
   db.query("select device_token from users", (err, result) => {
     if (err) {
       console.error("Error fetching device tokens:", err);
@@ -72,12 +75,25 @@ app.get("/discover-pothole", (req, res) => {
 
     const tokens = result.map((row) => row.device_token);
 
+    if (discovery === "pothole") {
+      type = "pothole";
+    } else if (discovery === "human") {
+      type = "human";
+    } else if (discovery === "dog") {
+      type = "dog";
+    } else if (discovery === "cat") {
+      type = "cat";
+    } else {
+      type = "unknown";
+    }
+
     const message = {
       notification: {
         title: "포트홀을 발견했습니다!",
         body: "신고하시겠습니까?",
       },
       tokens: tokens,
+      type: type,
     };
 
     admin
