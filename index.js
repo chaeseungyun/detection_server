@@ -110,6 +110,40 @@ app.get("/discover-pothole/:discovery", (req, res) => {
   });
 });
 
+// 알림 테스트용 코드
+app.get("/discover-pothole", (req, res) => {
+  db.query("select device_token from users", (err, result) => {
+    if (err) {
+      console.error("Error fetching device tokens:", err);
+      res.status(500).send("Error fetching device tokens");
+      return;
+    }
+
+    const tokens = result.map((row) => row.device_token);
+
+    const message = {
+      notification: {
+        title: "포트홀을 발견했습니다!",
+        body: "신고하시겠습니까?",
+        tokens: tokens,
+        type: type,
+      },
+    };
+
+    admin
+      .messaging()
+      .sendMulticast(message)
+      .then((response) => {
+        console.log("Successfully sent message:", response);
+        res.send("Data received and notification sent");
+      })
+      .catch((error) => {
+        console.log("Error sending message:", error);
+        res.status(500).send("Error sending notification");
+      });
+  });
+});
+
 // 로그인
 app.post("/login", (req, res) => {
   const { account, password } = req.body;
