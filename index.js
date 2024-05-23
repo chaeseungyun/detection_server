@@ -126,7 +126,6 @@ app.get("/discover-pothole", (req, res) => {
         title: "포트홀을 발견했습니다!",
         body: "신고하시겠습니까?",
         tokens: tokens,
-        type: type,
       },
     };
 
