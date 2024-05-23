@@ -64,7 +64,7 @@ app.post("/create-account", (req, res) => {
 // 알림 테스트용 코드
 app.get("/discover-pothole/:discovery", (req, res) => {
   const discovery = req.params.discovery;
-  let type = "";
+  let title = "";
 
   db.query("select device_token from users", (err, result) => {
     if (err) {
@@ -76,15 +76,15 @@ app.get("/discover-pothole/:discovery", (req, res) => {
     const tokens = result.map((row) => row.device_token);
 
     if (discovery === "pothole") {
-      type = "pothole";
+      title = "포트홀을 발견했습니다!";
     } else if (discovery === "human") {
-      type = "human";
+      title = "human";
     } else if (discovery === "dog") {
-      type = "dog";
+      title = "dog";
     } else if (discovery === "cat") {
-      type = "cat";
+      title = "cat";
     } else {
-      type = "unknown";
+      title = "unknown";
     }
 
     const message = {
@@ -93,7 +93,6 @@ app.get("/discover-pothole/:discovery", (req, res) => {
         body: "신고하시겠습니까?",
       },
       tokens: tokens,
-      type: type,
     };
 
     admin
@@ -172,7 +171,7 @@ app.post("/login", (req, res) => {
 // 포트홀 발견 시 알림 전송
 app.post("/discover-pothole/:discovery", (req, res) => {
   const discovery = req.params.discovery;
-  let type = "";
+  let title = "";
 
   db.query("select device_token from users", (err, result) => {
     if (err) {
@@ -184,15 +183,15 @@ app.post("/discover-pothole/:discovery", (req, res) => {
     const tokens = result.map((row) => row.device_token);
 
     if (discovery === "pothole") {
-      type = "pothole";
+      title = "포트홀을 발견했습니다!";
     } else if (discovery === "human") {
-      type = "human";
+      title = "human";
     } else if (discovery === "dog") {
-      type = "dog";
+      title = "dog";
     } else if (discovery === "cat") {
-      type = "cat";
+      title = "cat";
     } else {
-      type = "unknown";
+      title = "unknown";
     }
 
     const message = {
@@ -201,7 +200,6 @@ app.post("/discover-pothole/:discovery", (req, res) => {
         body: "신고하시겠습니까?",
       },
       tokens: tokens,
-      type: type,
     };
 
     admin
