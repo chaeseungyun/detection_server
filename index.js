@@ -120,8 +120,11 @@ app.post("/login", (req, res) => {
   });
 });
 
-// 포트홀 발견 시 데이터를 담아 서버로 전송
-app.post("/discover-pothole", (req, res) => {
+// 포트홀 발견 시 알림 전송
+app.post("/discover-pothole/:discovery", (req, res) => {
+  const discovery = req.params.discovery;
+  let type = "";
+
   db.query("select device_token from users", (err, result) => {
     if (err) {
       console.error("Error fetching device tokens:", err);
@@ -131,12 +134,25 @@ app.post("/discover-pothole", (req, res) => {
 
     const tokens = result.map((row) => row.device_token);
 
+    if (discovery === "pothole") {
+      type = "pothole";
+    } else if (discovery === "human") {
+      type = "human";
+    } else if (discovery === "dog") {
+      type = "dog";
+    } else if (discovery === "cat") {
+      type = "cat";
+    } else {
+      type = "unknown";
+    }
+
     const message = {
       notification: {
         title: "포트홀을 발견했습니다!",
         body: "신고하시겠습니까?",
       },
       tokens: tokens,
+      type: type,
     };
 
     admin
